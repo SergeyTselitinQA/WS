@@ -1,7 +1,9 @@
 import time
 
+import document
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.select import Select
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.support.ui import WebDriverWait
@@ -13,14 +15,17 @@ chrome_options.add_argument("--window-size=1920,1080")
 service = Service(executable_path=ChromeDriverManager().install())
 driver = webdriver.Chrome(service=service, options=chrome_options)
 
+
 driver.get("https://aqa-proka4.org/sandbox/web")
-driver.find_element("xpath", "//*[@id='submitBtn']").click()
-time.sleep(3)
-try:
-    WebDriverWait(driver, 10).until(EC.alert_is_present())
-    alert = driver.switch_to.alert
-    alert_text = alert.text
-    print("Текст уведомления:", alert_text)  # Вывод текста уведомления
-    alert.accept()  # Закрыть уведомление
-except Exception as e:
-    print("Уведомление не отображается:", e)
+
+# ждём появление поля пароля
+pwd = WebDriverWait(driver, 10).until(EC.presence_of_element_located(("xpath", "//*[@id='username']")))
+
+# убедимся, что поле required (если нет — validationMessage будет пуст)
+# вызвать валидацию: клик на сабмит или reportValidity
+submit = driver.find_element("xpath", "//*[@id='submitBtn']")
+submit.click()
+
+# безопасно получить validationMessage у найденного элемента
+val_msg = driver.execute_script("return arguments[0] ? arguments[0].validationMessage : null;", pwd)
+assert val_msg == 'Заполните это поле.', 'Ошибка в регистации пользователя'

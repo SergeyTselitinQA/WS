@@ -14,7 +14,7 @@ wait = WebDriverWait(driver, 15, poll_frequency=1)
 
 driver.get("https://aqa-proka4.org/sandbox/web")
 
-a= ("xpath", "//*[@id='username']")
+a = ("xpath", "//*[@id='username']")
 wait.until(EC.element_to_be_clickable(a))
 driver.find_element(*a).send_keys("Ivan")
 

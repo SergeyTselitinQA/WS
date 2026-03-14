@@ -1,5 +1,3 @@
-import time
-
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
@@ -22,5 +20,3 @@ driver.find_element("xpath", "//*[@id='submitBtn']").click()
 pwd = WebDriverWait(driver, 10).until(EC.presence_of_element_located(("xpath", "//*[@id='country']")))
 val_msg = driver.execute_script("return arguments[0] ? arguments[0].validationMessage : null;", pwd)
 assert val_msg == 'Выберите один из пунктов списка.', 'Ошибка в регистации пользователя'
-print(pwd)
-time.sleep(3)

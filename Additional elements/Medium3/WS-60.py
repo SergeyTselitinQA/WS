@@ -9,6 +9,7 @@ service = Service(executable_path=ChromeDriverManager().install())
 driver = webdriver.Chrome(service=service, options=chrome_options)
 
 driver.get("https://aqa-proka4.org/sandbox/web")
+
 volume_slider = driver.find_element("xpath", "//*[@id='volumeSlider']")
 driver.execute_script("arguments[0].value = 100", volume_slider)
 driver.execute_script("arguments[0].dispatchEvent(new Event('input'))", volume_slider)

@@ -1,5 +1,3 @@
-import time
-
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
@@ -27,13 +25,12 @@ id_dark = driver.find_element("xpath", "//*[@id='darkModeToggle']")
 if not id_dark.is_selected():
     dark_toggle.click()
 
-
-
 assert id_email.is_selected() == True
 assert id_push.is_selected() == True
 assert id_dark.is_selected() == True
 
-# color_picker = driver.find_element("xpath", "colorPicker")
-# driver.execute_script("arguments[0].value = '#FF0000'", color_picker)
+color_picker = driver.find_element("xpath", "//*[@id='colorPicker']")
+driver.execute_script("arguments[0].value = '#119c5b'", color_picker)
+driver.execute_script("arguments[0].dispatchEvent(new Event('change'))", color_picker)
 
-time.sleep(5)
+assert color_picker.get_attribute("value") == "#119c5b"

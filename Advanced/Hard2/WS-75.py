@@ -1,12 +1,9 @@
-import time
-
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.by import By
 
 chrome_options = webdriver.ChromeOptions()
 chrome_options.add_argument("--window-size=1920,1080")
@@ -19,6 +16,7 @@ wait = WebDriverWait(driver, 10)
 TOOLTIP = "Это всплывающая подсказка!"
 TOOLTIP_TWO = "Я снизу! 👇"
 MENU = "Главная\nПрофиль\nНастройки\nВыход"
+HIDDEN = "Секретный элемент! 🎉\nВы нашли скрытый контент"
 
 driver.get("https://aqa-proka4.org/sandbox/web")
 
@@ -41,4 +39,8 @@ el = wait.until(EC.visibility_of_element_located(("xpath", "//*[@id='hoverDropdo
 tooltip_menu = el.text
 assert MENU == tooltip_menu
 
-time.sleep(3)
+hidden_div = driver.find_element("xpath", "//*[@id='hiddenElement']")
+ActionChains(driver).move_to_element(hidden_div).perform()
+
+block = driver.find_element("xpath", "//*[@id='hiddenElement' and contains(@class,'opacity-100')]").text
+assert HIDDEN == block

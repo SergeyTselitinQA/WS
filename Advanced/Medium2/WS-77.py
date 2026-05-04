@@ -18,48 +18,36 @@ main_window = driver.current_window_handle
 
 # клик, открывающий новую вкладку
 driver.find_element(By.XPATH, "//*[@id='openTabBtn']").click()
+WebDriverWait(driver, 10).until(EC.number_of_windows_to_be(2))
+time.sleep(1)
 
-# ждём появления новой вкладки
-WebDriverWait(driver, 10).until(lambda d: len(d.window_handles) > 1)
+window_two = driver.window_handles
+driver.switch_to.window(window_two[1])
+driver.find_element("xpath", "//*[@id='paymentCard']").click()
+time.sleep(1)
 
-all_windows = driver.window_handles
-
-# переключаемся на первую вкладку, отличную от main
-for window in all_windows:
-    if window != main_window:
-        driver.switch_to.window(window)
-        break
-
-# ждём, пока кнопка в новой вкладке станет кликабельной, затем кликаем
-elem = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.ID, "tooltipBtn1")))
+driver.switch_to.window(main_window)
+elem = driver.find_element(By.ID, "paymentCard")
+driver.execute_script("arguments[0].scrollIntoView({block: 'center'})", elem)
 elem.click()
+time.sleep(1)
 
-before = set(driver.window_handles)
-
-# клик, открывающий новое окно
-driver.find_element(By.XPATH, "//*[@id='openWindowBtn']").click()
-
-# дождаться появления нового окна
-WebDriverWait(driver, 10).until(lambda d: len(d.window_handles) > len(before))
-
-# найти handle нового окна (разница множеств)
-after = set(driver.window_handles)
-new_handles = after - before
-if not new_handles:
-    raise RuntimeError("Не удалось найти новый window handle")
-new_window = new_handles.pop()
-
-# переключиться на новое окно и сфокусировать его
-driver.switch_to.window(new_window)
-driver.execute_script("window.focus();")
-
-# проверка
-print("switched to:", driver.current_window_handle, "title:", driver.title, "url:", driver.current_url)
-
-# затем можно ждать и кликать в новом окне
-elem = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.ID, "tooltipBtn1")))
+driver.find_element("xpath", "//*[@id='openWindowBtn']").click()
+time.sleep(1)
+three = driver.window_handles
+driver.switch_to.window(three[2])
+elem = driver.find_element(By.ID, "paymentCard")
+driver.execute_script("arguments[0].scrollIntoView({block: 'center'})", elem)
 elem.click()
+time.sleep(1)
 
-
-print(all_windows)
-time.sleep(3)
+driver.switch_to.window(main_window)
+time.sleep(1)
+driver.find_element("xpath", "//*[@id='openMultipleBtn']").click()
+time.sleep(1)
+all_window = driver.window_handles
+assert len(all_window) == 6
+time.sleep(1)
+driver.close()
+finish = driver.window_handles
+assert len(finish)  == 5

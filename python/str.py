@@ -23,3 +23,34 @@ print(str + " "  + "язык" + " " + "text")
 print(f"Я изучаю {text} c 10 лет!")
 print("Всем \"Привет \"")
 print(r"'\"Gh")
+
+# upper() и lower() — изменить регистр
+# replace() — заменить одно на другое
+# split() — разбить строку на список по разделителю
+# strip() — убрать лишние пробелы по краям
+# startswith() и endswith() — проверить начало и конец
+
+up = "ClasS"
+lo = "ping"
+print(up.upper())
+print(up.lower())
+print(lo.upper())
+print(lo.lower())
+
+text_replace = "Собака вышла поплавать в бассейне"
+print(text_replace.replace("вышла", "выбежала"))
+print(text_replace.replace("а", "-"))
+
+roles = "водитель! учитель! врач"
+print(roles.split("!"))
+
+email = "   vrvr rvrvr frfrfrvrf      "
+print(email.strip())
+
+url = "https://api.example.com/users"
+
+print(url.startswith("https"))
+print(url.startswith("users"))
+print(url.endswith("users"))
+print(url.endswith("https"))
+

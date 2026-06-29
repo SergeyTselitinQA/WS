@@ -54,3 +54,7 @@ print(url.startswith("users"))
 print(url.endswith("users"))
 print(url.endswith("https"))
 
+print("api" in url)
+print("/" in url)
+print("https" not in url)
+
